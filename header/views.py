@@ -1,4 +1,11 @@
 from django.views import generic
 
-class ListView(generic.TemplateView):
+from .models import Header
+
+class ListView(generic.ListView):
     template_name = "list.html"
+    model = Header
+
+    def get_queryset(self):
+        headers = Header.objects.order_by('id')
+        return headers
