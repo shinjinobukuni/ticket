@@ -1,0 +1,89 @@
+{% extends 'header/base.html' %}
+{% load static %}
+
+{% block title %}課題作成{% endblock %}
+
+{% block content-area %}
+<h1 class="p-3">課題作成</h1>
+<div class="px-5">
+    <form method="post" class="container">
+        {% csrf_token %}
+        <!-- まとめて       {{ form.as_p }}-->
+        <!--手動でhtmlを作ろうとするとこんな感じ
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            &lt;!&ndash;            <input type="text" class="form-control" id="{{ form.title.id_for_label }}" name="{{ form.title.html_name }}">&ndash;&gt;
+            {{ form.title }}
+        </div>
+        {% for v in form.type_cls.field.choices %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="{{ form.type_cls.html_name }}" id="exampleRadios1" value="{{ v.0 }}"
+                   >
+            <label class="form-check-label" for="exampleRadios1">
+                {{ v.1 }}
+            </label>
+        </div>
+        {% endfor %}-->
+        {% for field in form %}
+        <div class="form-group row">
+            <label class="col-lg-2 col-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <div class="col-lg-8">
+                {{ field }}
+            </div>
+        </div>
+
+
+        {% endfor %}
+
+
+        <a type="button" class="btn btn-outline-dark" href="{% url 'header:list' %}"><i class="bi bi-arrow-left mr-1"
+                                                                                        style="font-size:20px"></i>戻る</a>
+        <button type="submit" class="btn btn-outline-success">
+            <i class="bi bi-plus mr-1" style="font-size:20px"></i>登録
+        </button>
+
+    </form>
+
+</div>
+
+<script type="text/javascript">
+
+    typeList = Array(0)
+    {% for item in type_list %}
+    var type = {id:{{ item.id }} , color:"{{ item.color }}" };
+    typeList.push(type);
+    {% endfor %}
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+        // 種別のイベント
+        document.getElementById('{{ form.type_cls.id_for_label }}').addEventListener('change',
+            function() {
+                var type = typeList.find(x => x.id == this.value);
+                if (type) {
+                    this.style.background = type.color
+                } else {
+                    this.style.background = "#FFFFFF"
+                }
+
+            }, false);
+  // タグ内にjavascriptコードを直接記述します。
+  console.log("JavaScriptを実行しています");
+  {% for v in type_list %}
+    console.log("{{v.name}}"+{{v.id}});
+  {% endfor %}
+  },false);
+</script>
+<style>
+#{{ form.type_cls.id_for_label }} option:first-child {
+        background: #FFFFFF
+    }
+{% for item in type_list %}
+    #{{ form.type_cls.id_for_label }} option:nth-child({{forloop.counter|add:"1" }}) {
+        background:{{ item.color }}
+    }
+{% endfor %}
+</style>
+{% endblock %}
+

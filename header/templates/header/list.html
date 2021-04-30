@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'header/base.html' %}
 {% load static %}
 
 {% block title %}課題一覧{% endblock %}
@@ -6,7 +6,9 @@
 {% block content-area %}
 <h1 class="p-3">課題一覧</h1>
 <div class="px-5">
-    <button type="button" class="btn btn-outline-dark"><i class="bi bi-plus mr-1" style="font-size:20px"></i>追加</button>
+    <div class="text-right mb-1">
+        <a type="button" class="btn btn-outline-dark" href="{% url 'header:create' %}"><i class="bi bi-plus mr-1" style="font-size:20px"></i>課題を追加する</a>
+    </div>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
@@ -22,12 +24,13 @@
         <tr>
             <th scope="row">{{forloop.counter}}</th>
             <td>{{item.get_status_display }}</td>
-            <td>{{item.get_type_cls_display }}</td>
+            <td style="background: {{item.type_cls.color}}">{{item.type_cls.name }}</td>
             <td>{{item.title}}</td>
-            <td>{{item.limit_date}}</td>
+            <td>{{item.limit_date|default_if_none:""}}</td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+
 </div>
 {% endblock %}

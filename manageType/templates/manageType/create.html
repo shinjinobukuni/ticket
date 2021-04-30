@@ -1,0 +1,32 @@
+{% extends 'header/base.html' %}
+{% load static %}
+
+{% block title %}課題作成{% endblock %}
+
+{% block content-area %}
+<h1 class="p-3">課題作成</h1>
+<div class="px-5">
+    <form method="post" class="container">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group row">
+            <label class="col-lg-2 col-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <div class="col-lg-2">
+                {{ field }}
+            </div>
+        </div>
+
+
+        {% endfor %}
+
+
+        <a type="button" class="btn btn-outline-dark" href="{% url 'manageType:list' %}"><i class="bi bi-arrow-left mr-1"
+                                                                                        style="font-size:20px"></i>戻る</a>
+        <button type="submit" class="btn btn-outline-success">
+            <i class="bi bi-plus mr-1" style="font-size:20px"></i>登録
+        </button>
+
+    </form>
+
+</div>
+{% endblock %}
