@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'header/base.html' %}
 {% load static %}
 
 {% block title %}課題一覧{% endblock %}
@@ -6,7 +6,9 @@
 {% block content-area %}
 <h1 class="p-3">課題一覧</h1>
 <div class="px-5">
-    <button type="button" class="btn btn-outline-dark"><i class="bi bi-plus mr-1" style="font-size:20px"></i>追加</button>
+    <div class="text-right mb-1">
+        <button type="button" class="btn btn-outline-dark"><i class="bi bi-plus mr-1" style="font-size:20px"></i>課題を追加する</button>
+    </div>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
@@ -29,5 +31,6 @@
         {% endfor %}
         </tbody>
     </table>
+
 </div>
 {% endblock %}

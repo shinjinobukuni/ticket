@@ -3,7 +3,7 @@ from django.views import generic
 from .models import Header
 
 class ListView(generic.ListView):
-    template_name = "list.html"
+    template_name = "header/list.html"
     model = Header
 
     def get_queryset(self):
