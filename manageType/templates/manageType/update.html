@@ -1,10 +1,10 @@
 {% extends 'header/base.html' %}
 {% load static %}
 
-{% block title %}種別作成{% endblock %}
+{% block title %}種別更新{% endblock %}
 
 {% block content-area %}
-<h1 class="p-3">種別作成</h1>
+<h1 class="p-3">種別更新</h1>
 <div class="px-5">
     <form method="post" class="container">
         {% csrf_token %}
@@ -15,18 +15,22 @@
                 {{ field }}
             </div>
         </div>
-
-
         {% endfor %}
-
-
         <a type="button" class="btn btn-outline-dark" href="{% url 'manageType:list' %}"><i class="bi bi-arrow-left mr-1"
                                                                                         style="font-size:20px"></i>戻る</a>
         <button type="submit" class="btn btn-outline-success">
-            <i class="bi bi-plus mr-1" style="font-size:20px"></i>登録
+            <i class="bi bi-plus mr-1" style="font-size:20px"></i>更新
         </button>
-
     </form>
+    <form method="post" action="{% url 'manageType:delete' type.id %}" class="container">
+        {% csrf_token %}
+        <div class="text-right" style="width:60%">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-x mr-1" style="font-size:20px"></i>削除
+            </button>
+        </div>
+    </form>
+
 
 </div>
 {% endblock %}

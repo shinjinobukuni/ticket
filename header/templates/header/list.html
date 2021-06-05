@@ -10,6 +10,13 @@
         <a type="button" class="btn btn-outline-dark" href="{% url 'header:create' %}"><i class="bi bi-plus mr-1" style="font-size:20px"></i>課題を追加する</a>
     </div>
     <table class="table table-hover">
+        <colgroup>
+            <col style="width: 5%">
+            <col style="width: 15%">
+            <col style="width: 20%">
+            <col style="width: 50%">
+            <col style="width: 10%">
+        </colgroup>
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -24,7 +31,7 @@
         <tr>
             <th scope="row">{{forloop.counter}}</th>
             <td>{{item.get_status_display }}</td>
-            <td style="background: {{item.type_cls.color}}">{{item.type_cls.name }}</td>
+            <td><div style="background: {{item.type_cls.color}}; padding:3px; 10px;">{{item.type_cls.name }}</div></td>
             <td>{{item.title}}</td>
             <td>{{item.limit_date|default_if_none:""}}</td>
         </tr>

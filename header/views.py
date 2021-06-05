@@ -27,3 +27,11 @@ class HeaderCreateView(CreateView):
         context['type_list'] = Type.objects.all().order_by('sortCd')
         return context
 
+    def form_valid(self, form):
+        messages.success(self.request, '追加しました。')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, '追加に失敗しました。')
+        return super().form_invalid(form)
+
