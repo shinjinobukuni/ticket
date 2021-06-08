@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'colorfield',
+    'bootstrap_datepicker_plus',
 
     'header.apps.HeaderConfig',
     'manageType.apps.ManagetypeConfig',

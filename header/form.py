@@ -2,6 +2,7 @@ from django import forms
 from .models import Header
 from manageType.models import Type
 from django.contrib.admin.widgets import AdminDateWidget
+import bootstrap_datepicker_plus as datetimepicker
 
 class TypeChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj): # label_from_instance 関数をオーバーライド
@@ -19,6 +20,12 @@ class HeaderForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['type_cls'].widget.attrs.update({'class': 'form-control col-lg-3'})
         self.fields['title'].widget.attrs.update({'class': 'form-control col-lg-10'})
-        self.fields['limit_date'].widget = forms.SelectDateWidget()
-        self.fields['limit_date'].widget.attrs.update({'class': 'vDateField form-control d-inline col-lg-2'})
+        self.fields['limit_date'].widget = datetimepicker.DatePickerInput(
+                format='%Y-%m-%d',
+                options={
+                    'locale': 'ja',
+                    'dayViewHeaderFormat': 'YYYY年 MMMM',
+                }
+            )
+        self.fields['limit_date'].widget.attrs.update({'class': 'form-control col-lg-2'})
         self.fields['status'].widget.attrs.update({'class': 'form-control col-lg-3'})
