@@ -1,9 +1,11 @@
 from django.views import generic
 from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from .form import HeaderForm
-from .models import Header
+from django.core import serializers
+from django.http import HttpResponse
+from .form import HeaderForm, HeaderUpdateForm
+from .models import Header, Detail
 from manageType.models import Type
 
 class ListView(generic.ListView):
@@ -37,5 +39,39 @@ class HeaderCreateView(CreateView):
 
 class HeaderUpdateView(generic.edit.UpdateView):
     template_name = "header/update.html"
+    form_class = HeaderUpdateForm
     model = Header
-    form_class = HeaderForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        #model = Header.objects.get(pk=context['pk'])
+
+        return context
+
+
+    def form_valid(self, form):
+        messages.success(self.request, '更新しました。')
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, '更新に失敗しました。')
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('header:update', kwargs = {'pk': self.kwargs['pk']})
+
+def getDetailList(request, headerId):
+
+    details = Detail.objects.filter(header_id = headerId)
+    jsonDetails = serializers.serialize('json', details)
+
+    return HttpResponse(jsonDetails, content_type="text/json-comment-filtered")
+
+# 忘備
+# 参考リスト
+# https://docs.djangoproject.com/ja/3.2/ref/csrf/
+# https://qiita.com/kakimochi/items/4e95c9e4d1e4b00ec05a
+
+

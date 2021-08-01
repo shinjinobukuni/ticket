@@ -6,7 +6,7 @@
     position: fixed;
     height: 100%;
     width: 200px;
-    z-index: 1;
+    z-index: 10;
 }
 
 .side-menu-open {
@@ -57,4 +57,22 @@
     position: relative;
     left:60px;
     width:calc(100vw - 60px);
+}
+
+.details-area {
+    margin-top: 100px;
+}
+
+.detail {
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+.detail-date {
+    padding: 5px 20px 20px 10px;
+    color: #aaa;
+}
+
+.detail-content {
+    padding: 10px 70px 50px 120px;
 }

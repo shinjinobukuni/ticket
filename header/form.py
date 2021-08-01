@@ -14,12 +14,16 @@ class HeaderForm(forms.ModelForm):
 
     class Meta:
         model = Header
-        fields = ['type_cls', 'title', 'limit_date', 'status']
+        fields = ['type_cls', 'title', 'content','limit_date', 'status']
+
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['type_cls'].widget.attrs.update({'class': 'form-control col-lg-3'})
         self.fields['title'].widget.attrs.update({'class': 'form-control col-lg-10'})
+        self.fields['content'].widget = forms.Textarea(attrs={'rows':8, 'cols':15})
+        self.fields['content'].widget.attrs.update({'class': 'form-control col-lg-10'})
         self.fields['limit_date'].widget = datetimepicker.DatePickerInput(
                 format='%Y-%m-%d',
                 options={
@@ -29,3 +33,20 @@ class HeaderForm(forms.ModelForm):
             )
         self.fields['limit_date'].widget.attrs.update({'class': 'form-control col-lg-2'})
         self.fields['status'].widget.attrs.update({'class': 'form-control col-lg-3'})
+
+class HeaderUpdateForm(forms.ModelForm):
+
+    type_cls = TypeChoiceField(queryset=Type.objects.all().order_by('sortCd'), label='種別', required=False)
+
+    class Meta:
+        model = Header
+        fields = ['type_cls', 'title', 'content']
+
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['type_cls'].widget.attrs.update({'class': 'form-control col-lg-3'})
+        self.fields['title'].widget.attrs.update({'class': 'form-control col-lg-10'})
+        self.fields['content'].widget = forms.Textarea(attrs={'rows':8, 'cols':15})
+        self.fields['content'].widget.attrs.update({'class': 'form-control col-lg-10'})
