@@ -8,4 +8,5 @@ urlpatterns = [
     path('create', views.HeaderCreateView.as_view(), name="create"),
     path('detail/<int:pk>', views.HeaderUpdateView.as_view(), name="update"),
     path('get-detail-list/<int:headerId>', views.getDetailList, name="getDetailList"),
+    path('update-comment', views.updateComment, name="updateComment"),
 ]

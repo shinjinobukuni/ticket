@@ -4,9 +4,12 @@ from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse
+from django.http import QueryDict
 from .form import HeaderForm, HeaderUpdateForm
 from .models import Header, Detail
 from manageType.models import Type
+import json
+from django.utils import timezone
 
 class ListView(generic.ListView):
     template_name = "header/list.html"
@@ -69,6 +72,25 @@ def getDetailList(request, headerId):
 
     return HttpResponse(jsonDetails, content_type="text/json-comment-filtered")
 
+def updateComment(request):
+
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    addContent = body['addContent']
+    headerId = body['headerId']
+    status = body['status']
+
+    header = Header.objects.get(pk = headerId)
+    header.status = status
+    header.save()
+
+    detail = Detail(header_id = header, content = addContent, create_at = timezone.now())
+    detail.save()
+
+    details = Detail.objects.filter(header_id=headerId)
+    jsonDetails = serializers.serialize('json', details)
+
+    return HttpResponse(jsonDetails, content_type="text/json-comment-filtered")
 # 忘備
 # 参考リスト
 # https://docs.djangoproject.com/ja/3.2/ref/csrf/

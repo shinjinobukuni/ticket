@@ -12,8 +12,11 @@
         </button>
         <div v-if="mode">
             <div class="mt-3">
+                <div class="mb-2">期限：{{ header.limit_date }}</div>
                 <span style="background: {{header.type_cls.color}}; padding:3px; 10px; margin-right:1rem">{{ header.type_cls.name }}</span>
                 <span>{{ header.title }}</span>
+
+
 
                 <div class="details-area">
                     <h5>コメント([[ details.length ]])</h5>
@@ -23,6 +26,30 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div v-bind:class="{'detail-add-open': dispAddFlg, 'detail-add-close': !dispAddFlg}" id="detail-add-input">
+                <button type="button" class="btn btn-outline-dark" v-on:click="switchAdd">
+                    <i class="bi bi-plus mr-1" style="font-size:20px"></i>コメント追加
+                </button>
+                <div class="row">
+                    <div class="col-md-10">
+                        <textarea class="comment" v-model="addContent">
+                        </textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="pr-3 mb-3">
+                            <select name="status" id="id_status" class="form-control" v-model="status">
+                            {% for item in header.STATUS_CHOICES %}
+                                <option value="{{ item.0}}">{{ item.1 }} </option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <button type="submit" class="btn btn-outline-info" v-on:click="updateComment">
+                        <i class="bi bi-plus mr-1" style="font-size:20px"></i>更新
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <form method="post" v-if="!mode">
@@ -55,15 +82,30 @@
   el: '#app',
   data: {
     headerId: {{ header.pk }},
-    limitDate: '',
-    status: '',
+    status: {{ header.status }},
     details: [],
     addContent: '',
     mode: true,
+    dispAddFlg: false,
   },
   methods: {
     switchMode: function() {
         this.mode = !this.mode
+    },
+    switchAdd: function() {
+        this.dispAddFlg = !this.dispAddFlg
+    },
+    updateComment: function() {
+        axios.defaults.xsrfCookieName = 'csrftoken';
+        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+
+        axios
+            .post("{% url 'header:updateComment' %}",
+                {headerId: this.headerId, addContent: this.addContent, status: this.status})
+            .then(res => {
+                this.details = res.data;
+                this.addContent;
+            })
     }
   },
   created: function() {
